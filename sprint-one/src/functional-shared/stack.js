@@ -7,20 +7,30 @@ var Stack = function() {
     for (var key in obj2) {
       obj1[key] = obj2[key];
     }
-  }
+  };
   
   extend(someInstance, stackMethods);
   return someInstance;
 };
 
 var stackMethods = {
-  push: function (value) {},
+  push: function (value) {
+    this.length++;
+    this.storage[this.length] = value;
+  },
 
-  pop: function() {},
+  pop: function() {
+    var popped;
+    if (this.length > 0) {
+      popped = this.storage[this.length];
+      this.length--;
+    }
+    return popped;  
+  },
 
   size: function() {
-      return this.length;
-    }
+    return this.length;
+  }
 
 };
 
