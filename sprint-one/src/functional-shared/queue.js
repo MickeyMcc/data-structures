@@ -1,7 +1,7 @@
 var Queue = function() {
   // Hey! Rewrite in the new style. Your code will wind up looking very similar,
   // but try not not reference your old code in writing the new style.
-  var anInstance = {'size': 0, 'storage': {}};
+  var anInstance = {'length': 0, 'storage': {}};
 
   var extend = function(obj1, obj2) {
     for (var key in obj2) {
@@ -15,11 +15,26 @@ var Queue = function() {
 };
 
 var queueMethods = {
-  enqueue: function() {},
+  enqueue: function(value) {
+    this.length++;
+    this.storage[this.length] = value;
+  },
 
-  dequeue: function() {},
+  dequeue: function() {
+    var next;
+    if (this.length > 0) {
+      next = this.storage[1];
+      for (var i = 1; i <= this.length; i++) {
+        this.storage[i] = this.storage[i + 1];
+      }
+      this.length--;
+    }
+    return next;
+  },
 
-  size: function() {}
+  size: function() {
+    return this.length;
+  }
 };
 
 
