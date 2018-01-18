@@ -21,7 +21,7 @@ Graph.prototype.contains = function(node) {
 Graph.prototype.removeNode = function(node) {
   var nodeIndex = this.nodes.indexOf(node);
   this.nodes.splice(nodeIndex, 1);
-  for (var i = 0; i < this.edges[node].length; i++){ 
+  for (var i = 0; i < this.edges[node].length; i++) { 
     this.removeEdge(node, this.edges[node][i]);
   }
   this.edges[node] = [];
@@ -42,14 +42,14 @@ Graph.prototype.addEdge = function(fromNode, toNode) {
 // Remove an edge between any two specified (by value) nodes.
 Graph.prototype.removeEdge = function(fromNode, toNode) {
   var nodeIndex = this.edges[fromNode].indexOf(toNode);
-  this.edges[fromNode].splice(nodeIndex,1);
+  this.edges[fromNode].splice(nodeIndex, 1);
   nodeIndex = this.edges[toNode].indexOf(fromNode);
-  this.edges[toNode].splice(nodeIndex,1);
+  this.edges[toNode].splice(nodeIndex, 1);
 };
 
 // Pass in a callback which will be executed on each node of the graph.
 Graph.prototype.forEachNode = function(cb) {
-  for(var i = 0; i < this.nodes.length; i++) {
+  for (var i = 0; i < this.nodes.length; i++) {
     cb(this.nodes[i]);
   }
 };
