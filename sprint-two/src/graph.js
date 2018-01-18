@@ -2,37 +2,31 @@
 
 // Instantiate a new graph
 var Graph = function(value) {
-  this.value = value;
+  this.nodes = [];
   this.edges = [];
 };
 
 // Add a node to the graph, passing in the node's value.
 Graph.prototype.addNode = function(node) {
-  var newNode = new Graph(node);
-  this.edges.push(newNode);
-  newNode.edges.push(this);
+  this.nodes.push(node);
+  this.edges.push({node : []});
 };
 
 // Return a boolean value indicating if the value passed to contains is represented in the graph.
-Graph.prototype.contains = function(node, array) {
-  var alreadyVisited = array || []; // nodes that were already visited
-  if (this.value === node) { // if current graph has target value
-    return true;
-  } else {
-    alreadyVisited.push(this); // push current graph in alreadyVisited
-    for (var i = 0; i < this.edges.length; i++) { // for each current graph's edges
-      if (!alreadyVisited.includes(this.edges[i])) { // if alreadyVisited array does not include current graph edge
-        if (this.edges[i].contains(node, alreadyVisited)) { // check if each current graph edge contains target value
-          return true;
-        }
-      }
-    }
-    return false; // if no graphs contain the target value
-  }
+Graph.prototype.contains = function(node) {
+  return this.nodes.includes(node);
 };
 
 // Removes a node from the graph.
 Graph.prototype.removeNode = function(node) {
+  nodeIndex = this.nodes.indexOf(node);
+  this.nodes.splice(nodeIndex, 1);
+/*
+  this.edges[nodeIndex].node.forEach(function(connected) {
+      connectedIndex = 
+      this.nodes.splice(connectedIndex, 1);
+  }
+*/
 };
 
 // Returns a boolean indicating whether two specified nodes are connected.  Pass in the values contained in each of the two nodes.
