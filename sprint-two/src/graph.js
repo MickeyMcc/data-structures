@@ -15,19 +15,19 @@ Graph.prototype.addNode = function(node) {
 
 // Return a boolean value indicating if the value passed to contains is represented in the graph.
 Graph.prototype.contains = function(node, array) {
-  var alreadyVisited = array || [];
-  if (this.value === node) {
+  var alreadyVisited = array || []; // nodes that were already visited
+  if (this.value === node) { // if current graph has target value
     return true;
   } else {
-    alreadyVisited.push(this);
-    for (var i = 0; i < this.edges.length; i++) {
-      if (!alreadyVisited.includes(this.edges[i])) {
-        if (this.edges[i].contains(node, alreadyVisited)) {
+    alreadyVisited.push(this); // push current graph in alreadyVisited
+    for (var i = 0; i < this.edges.length; i++) { // for each current graph's edges
+      if (!alreadyVisited.includes(this.edges[i])) { // if alreadyVisited array does not include current graph edge
+        if (this.edges[i].contains(node, alreadyVisited)) { // check if each current graph edge contains target value
           return true;
         }
       }
     }
-    return false;
+    return false; // if no graphs contain the target value
   }
 };
 
