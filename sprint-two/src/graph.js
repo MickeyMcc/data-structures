@@ -8,10 +8,27 @@ var Graph = function(value) {
 
 // Add a node to the graph, passing in the node's value.
 Graph.prototype.addNode = function(node) {
+  var newNode = new Graph(node);
+  this.edges.push(newNode);
+  newNode.edges.push(this);
 };
 
 // Return a boolean value indicating if the value passed to contains is represented in the graph.
-Graph.prototype.contains = function(node) {
+Graph.prototype.contains = function(node, array) {
+  var alreadyVisited = array || [];
+  if (this.value === node) {
+    return true;
+  } else {
+    alreadyVisited.push(this);
+    for (var i = 0; i < this.edges.length; i++) {
+      if (!alreadyVisited.includes(this.edges[i])) {
+        if (this.edges[i].contains(node, alreadyVisited)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 };
 
 // Removes a node from the graph.
