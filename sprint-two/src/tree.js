@@ -19,10 +19,22 @@ treeMethods.addChild = function(value) {
 };
 
 treeMethods.contains = function(target) {
+  var found = false;
+  if (this.value === target) {  //this node is the one
+    return true;
+  }
+  for (var i = 0; i < this.children.length; i++) {
+    if (this.children[i].contains(target)) {  //if that child tree had target we are done
+      return true;
+    }
+  } // otherwise continue through childre
+  return false; //after all nodes have been checked
 };
 
 
 
 /*
  * Complexity: What is the time complexity of the above functions?
+addChild: O(1)
+treeMethods: O(n)
  */
