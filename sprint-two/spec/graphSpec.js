@@ -68,4 +68,13 @@ describe('graph', function() {
     expect(graph.hasEdge(3, 5)).to.equal(true);
     expect(graph.hasEdge(5, 5)).to.equal(true);
   });
+
+  it('should return the node with the most edges', function() {
+    graph.addNode(2);
+    graph.addNode(1);
+    graph.addNode(3);
+    graph.addEdge(3, 2);
+    graph.addEdge(1, 2);
+    expect(graph.findMostEdges()).to.equal(2);
+  });
 });

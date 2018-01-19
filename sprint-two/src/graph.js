@@ -3,7 +3,7 @@
 // Instantiate a new graph
 var Graph = function(value) {
   this.nodes = [];
-  this.edges = [];
+  this.edges = {};
 };
 
 // Add a node to the graph, passing in the node's value.
@@ -54,8 +54,25 @@ Graph.prototype.forEachNode = function(cb) {
   }
 };
 
+// Returns the node with the most edges
+Graph.prototype.findMostEdges = function() {
+  var mostEdges = this.nodes[0];
+  for (var i = 0; i < this.nodes.length; i++) {
+    if (this.edges[this.nodes[i]].length > this.edges[mostEdges].length) {   
+      mostEdges = this.nodes[i];
+    }
+  }
+  return mostEdges;
+};
+
 /*
  * Complexity: What is the time complexity of the above functions?
+ * .addNode: O(1)
+ * .contains: O(n)
+ * .removeNode: O(n)
+ * .hasEdge: O(n)
+ * .addEdge: O(1)
+ * .removeEdge: O(n)
+ * .forEachNode: O(n)
+ * .findMostEdges: O(n)
  */
-
-
