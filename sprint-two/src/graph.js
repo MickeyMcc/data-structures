@@ -69,7 +69,7 @@ Graph.prototype.findMostEdges = function() {
  * Complexity: What is the time complexity of the above functions?
  * .addNode: O(1)
  * .contains: O(n)
- * .removeNode: O(n)
+ * .removeNode: O(n^2)
  * .hasEdge: O(n)
  * .addEdge: O(1)
  * .removeEdge: O(n)
