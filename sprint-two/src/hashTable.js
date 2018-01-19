@@ -44,6 +44,10 @@ HashTable.prototype.remove = function(k) {
   this._storage.set(index, holderBucket); //set storage to be new smaller bucket
 };
 
+HashTable.prototype.findKeyFor = function(v) {
+
+};
+
 
 
 /*

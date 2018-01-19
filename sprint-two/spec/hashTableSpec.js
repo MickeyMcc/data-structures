@@ -47,6 +47,22 @@ describe('hashTable', function() {
     window.getIndexBelowMaxForKey = oldHashFunction;
   });
 
+  it('should return the key for an inputed value', function() {
+    hashTable.insert('Bob', 'Loblaw');
+    hashTable.insert('Bob', 'Barker');
+    hashTable.insert('Steven', 'Spielberg');
+    hashTable.insert('Steven', 'Seagal');
+    expect(hashTable.findKeyFor('Seagal')).to.equal('Steven');
+  });
+
+  it('should find no key for a value not present in table', function() {
+    hashTable.insert('Bob', 'Loblaw');
+    hashTable.insert('Bob', 'Barker');
+    hashTable.insert('Steven', 'Spielberg');
+    hashTable.insert('Steven', 'Seagal');
+    expect(hashTable.findKeyFor('John')).to.equal('value not found');
+  });
+
   // (Advanced! Remove the extra "x" when you want the following tests to run)
   xit ('should double in size when needed', function() {
     _.each(people, function(person) {
