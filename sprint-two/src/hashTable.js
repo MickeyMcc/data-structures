@@ -9,7 +9,6 @@ HashTable.prototype.insert = function(k, v) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   var currentBucket = this._storage.get(index);
   if (Array.isArray(currentBucket)) {
-  debugger;
     //need to check for already used key
     for (var i = 0; i < currentBucket.length; i++) {
       if (currentBucket[i][0] === k) {

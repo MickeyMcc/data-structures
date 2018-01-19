@@ -24,4 +24,17 @@ describe('set', function() {
     expect(set.contains('Mel Gibson')).to.equal(false);
   });
 
+  it('should return a random value from a set', function() {
+    set.add('Mel Gibson');
+    set.add('Danny Glover');
+    set.add('Mickey McC');
+    set.add('Stephanie Chou');
+    set.add('John Jones');
+    set.add('Spongebob Squarepants');
+    set.add('Susan Sarandon');
+    var randomPerson = set.getRandom();
+    expect(set.contains(randomPerson)).to.equal(true);
+    expect(set.getRandom()).to.not.equal(randomPerson);
+  });
+
 });
