@@ -35,6 +35,17 @@ var LinkedList = function() {
     return false;
   };
 
+  list.addToHead = function(value) {
+    if (list.head === null) {
+      list.head = Node(value);
+      list.tail = list.head;
+    } else {
+      var oldHead = list.head;
+      list.head = Node(value);
+      list.head.next = oldHead;
+    }
+  };
+
   return list;
 };
 
