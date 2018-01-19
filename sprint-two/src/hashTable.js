@@ -9,6 +9,7 @@ HashTable.prototype.insert = function(k, v) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   var currentBucket = this._storage.get(index);
   if (Array.isArray(currentBucket)) {
+  debugger;
     //need to check for already used key
     for (var i = 0; i < currentBucket.length; i++) {
       if (currentBucket[i][0] === k) {
@@ -45,7 +46,17 @@ HashTable.prototype.remove = function(k) {
 };
 
 HashTable.prototype.findKeyFor = function(v) {
-
+  for (var i = 0; i < this._limit; i++) {
+    var bucket = this._storage.get(i);
+    if (Array.isArray(bucket)) {
+      for (var j = 0; j < bucket.length; j++) {
+        if (bucket[j][1] === v) {
+          return bucket[j][0];
+        }
+      }
+    }
+  }
+  return 'value not found';
 };
 
 

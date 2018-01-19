@@ -49,16 +49,16 @@ describe('hashTable', function() {
 
   it('should return the key for an inputed value', function() {
     hashTable.insert('Bob', 'Loblaw');
-    hashTable.insert('Bob', 'Barker');
-    hashTable.insert('Steven', 'Spielberg');
+    hashTable.insert('George', 'Barker');
+    hashTable.insert('John', 'Spielberg');
     hashTable.insert('Steven', 'Seagal');
     expect(hashTable.findKeyFor('Seagal')).to.equal('Steven');
   });
 
   it('should find no key for a value not present in table', function() {
     hashTable.insert('Bob', 'Loblaw');
-    hashTable.insert('Bob', 'Barker');
-    hashTable.insert('Steven', 'Spielberg');
+    hashTable.insert('George', 'Barker');
+    hashTable.insert('John', 'Spielberg');
     hashTable.insert('Steven', 'Seagal');
     expect(hashTable.findKeyFor('John')).to.equal('value not found');
   });
