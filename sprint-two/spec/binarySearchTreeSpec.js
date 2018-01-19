@@ -35,7 +35,20 @@ describe('binarySearchTree', function() {
     binarySearchTree.insert(3);
     binarySearchTree.insert(7);
     binarySearchTree.depthFirstLog(func);
-    console.log(array);
     expect(array).to.eql([5, 2, 3, 7]);
   });
+
+  it('should find the closest number present in the tree', function() {
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(12);
+    binarySearchTree.insert(7);
+    binarySearchTree.insert(15);
+    binarySearchTree.insert(4);
+    binarySearchTree.insert(10);
+    binarySearchTree.insert(11);
+    binarySearchTree.insert(17);
+    expect(binarySearchTree.closest(65)).to.equal(17);
+  });
+
+  
 });

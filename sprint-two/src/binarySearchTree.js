@@ -35,14 +35,10 @@ biTreeMethods.contains = function(value) {
   if (value === this.value) {
     found = true;
   }
-  if (value > this.value) { 
-    if (this.right !== null) {
-      found = found || this.right.contains(value);  
-    }  
-  } else { 
-    if (this.left !== null) {
-      found = found || this.left.contains(value); 
-    }
+  if (this.right && (value > this.value)) {
+    found = found || this.right.contains(value);   
+  } else if (this.left && (value < this.value)) { 
+    found = found || this.left.contains(value); 
   }
   return found;
 };
@@ -55,7 +51,19 @@ biTreeMethods.depthFirstLog = function(cb) {
   if (this.right) {
     this.right.depthFirstLog(cb);
   }
-  console.log(this);
+};
+
+biTreeMethods.closest = function(value, closestValue = 0) {
+  if (Math.abs(this.value - value) < Math.abs(closestValue - value)) { //doesn't replace on ties
+    closestValue = this.value;
+  }
+  if (this.left && (value < this.value)) {
+    closestValue = this.left.closest(value, closestValue);
+  }
+  if (this.right && (value > this.value)) {
+    closestValue = this.right.closest(value, closestValue);
+  }
+  return closestValue; //if two numbers on tree are equidistant, will always return the smaller
 };
 
 /*
@@ -63,4 +71,5 @@ biTreeMethods.depthFirstLog = function(cb) {
 * .insert O(logN)
 * .contains O(logN)
 * .depthFirstLog O(n)
+* .closest O(logN)
  */
