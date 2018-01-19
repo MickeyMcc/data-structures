@@ -36,7 +36,13 @@ HashTable.prototype.retrieve = function(k) {
 
 HashTable.prototype.remove = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-  this._storage.set(index, undefined);
+  var holderBucket = this._storage.get(index);
+  for (var i = 0; i < holderBucket.length; i++) {
+    if (holderBucket[i][0] === k) { //find key in bucketed tuples
+      holderBucket.splice(i, 1); //take that tuple out of bucket
+    }
+  }
+  this._storage.set(index, holderBucket); //set storage to be new smaller bucket
 };
 
 
