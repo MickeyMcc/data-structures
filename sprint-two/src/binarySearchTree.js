@@ -31,7 +31,6 @@ biTreeMethods.insert = function(value) {
 
 
 biTreeMethods.contains = function(value) {
-  debugger;
   var found = false;
   if (value === this.value) {
     found = true;
@@ -49,7 +48,13 @@ biTreeMethods.contains = function(value) {
 };
 
 biTreeMethods.depthFirstLog = function(cb) {
-
+  cb(this);
+  if (this.left) {
+    this.left.depthFirstLog(cb);
+  }
+  if (this.right) {
+    this.right.depthFirstLog(cb);
+  }
 };
 
 /*
