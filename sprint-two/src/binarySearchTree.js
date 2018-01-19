@@ -48,15 +48,19 @@ biTreeMethods.contains = function(value) {
 };
 
 biTreeMethods.depthFirstLog = function(cb) {
-  cb(this);
+  cb(this.value);
   if (this.left) {
     this.left.depthFirstLog(cb);
   }
   if (this.right) {
     this.right.depthFirstLog(cb);
   }
+  console.log(this);
 };
 
 /*
  * Complexity: What is the time complexity of the above functions?
+* .insert O(logN)
+* .contains O(logN)
+* .depthFirstLog O(n)
  */
