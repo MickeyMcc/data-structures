@@ -39,9 +39,9 @@ HashTable.prototype.retrieve = function(k) {
 };
 
 HashTable.prototype.remove = function(k) {
-  // if ((this._numberOfThings - 1) / this._limit < 0.25) {
-  //   this.changeStorageSize(.5); 
-  // }
+  if ((this._numberOfThings - 1) / this._limit < 0.25) {
+    this.decreaseSize(); 
+  }
   var index = getIndexBelowMaxForKey(k, this._limit);
   var holderBucket = this._storage.get(index) || [];
   for (var i = 0; i < holderBucket.length; i++) {
@@ -84,6 +84,18 @@ HashTable.prototype.pullEverything = function() {
 HashTable.prototype.increaseSize = function() {
   var existingData = this.pullEverything();
   this._limit *= 2;
+  this._storage = LimitedArray(this._limit);
+  this._numberOfThings = 0;
+  for (var j = 0; j < existingData.length; j++) {
+    var key = existingData[j][0];
+    var value = existingData[j][1];
+    this.insert(key, value, true);
+  }
+};
+
+HashTable.prototype.decreaseSize = function() {
+  var existingData = this.pullEverything();
+  this._limit /= 2;
   this._storage = LimitedArray(this._limit);
   this._numberOfThings = 0;
   for (var j = 0; j < existingData.length; j++) {
