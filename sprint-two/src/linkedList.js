@@ -5,12 +5,26 @@ var LinkedList = function() {
 
   list.addToTail = function(value) {
     if (list.tail === null) {
-      list.tail = Node(value);
-      list.head = list.tail;
+      list.setFirstNode(value);
     } else {
       list.tail.next = Node(value);
       list.tail = list.tail.next;
     }
+  };
+
+  list.addToHead = function(value) {
+    if (list.head === null) {
+      list.setFirstNode(value);
+    } else {
+      var oldHead = list.head;
+      list.head = Node(value);
+      list.head.next = oldHead;
+    }
+  };
+
+  list.setFirstNode = function(value) {
+    list.tail = Node(value);
+    list.head = list.tail;
   };
 
   list.removeHead = function() {
@@ -21,29 +35,14 @@ var LinkedList = function() {
 
   list.contains = function(target) {
     var currentNode = list.head;
-    while (true) {
+    do {
       if (target === currentNode.value) {
         return true;
       } else {
-        if (currentNode.next === null) {
-          break;
-        } else {
-          currentNode = currentNode.next;
-        }
+        currentNode = currentNode.next;
       }
-    }
-    return false;
-  };
-
-  list.addToHead = function(value) {
-    if (list.head === null) {
-      list.head = Node(value);
-      list.tail = list.head;
-    } else {
-      var oldHead = list.head;
-      list.head = Node(value);
-      list.head.next = oldHead;
-    }
+    } while (currentNode !== null); // false when currentNode.previous was the tail
+    return false; //all nodes have been checked
   };
 
   return list;
@@ -60,4 +59,10 @@ var Node = function(value) {
 
 /*
  * Complexity: What is the time complexity of the above functions?
+ * .addToTail : O(1)
+ * .addToHead : O(1)
+ * .setFirstNode : O(1)
+ * .removeHead : O(1)
+ * .contains : O(n)
+ * 
  */
