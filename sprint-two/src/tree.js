@@ -33,11 +33,11 @@ treeMethods.contains = function(target) {
 
 treeMethods.remove = function(value) {
   for (var i = 0; i < this.children.length; i++) {
-    if (this.children[i].value === value) {
+    if (this.children[i].value === value) { //splices val to remove out of child list
       this.children.splice(i, 1);
       return;
     }
-    if (this.children[i] !== []) {
+    if (this.children[i] !== []) { //recurses down tree
       this.children[i].remove(value);
     }
   }  
@@ -45,6 +45,7 @@ treeMethods.remove = function(value) {
 
 /*
  * Complexity: What is the time complexity of the above functions?
-addChild: O(1)
-treeMethods: O(n)
+ * .addChild: O(1)
+ * .contains: O(n)
+ * .remove: O(n)
  */
