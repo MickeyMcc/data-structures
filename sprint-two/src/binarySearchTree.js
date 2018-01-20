@@ -15,20 +15,20 @@ biTreeMethods.insert = function(value) {
     return;//if val at node equals val to be added, quit
   }
   if (value > this.value) { //check if value to be added is greater than val at node
-    if (this.right === null) { // if yes see if right leaf if taken
-      this.right = BinarySearchTree(value); // if no assign value to right leaf
-    } else {
-      this.right.insert(value);// else call .insert on right leaf with value
-    }
+    this.right = this.addToBranch(this.right, value);
   } else { // else (to be added less than current node)see if left leaf is taken
-    if (this.left === null) { 
-      this.left = BinarySearchTree(value); // if no assign value to left leaf
-    } else {
-      this.left.insert(value); // else call .insert on left leaf with value
-    }  
+    this.left = this.addToBranch(this.left, value);
   }
 };
 
+biTreeMethods.addToBranch = function(branch, value) {
+  if (branch === null) { 
+    branch = BinarySearchTree(value);
+  } else {
+    branch.insert(value); //recurse down tree
+  }
+  return branch;
+};  
 
 biTreeMethods.contains = function(value) {
   var found = false;
