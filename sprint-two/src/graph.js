@@ -36,7 +36,6 @@ Graph.prototype.hasEdge = function(fromNode, toNode) {
 Graph.prototype.addEdge = function(fromNode, toNode) {
   this.edges[fromNode].push(toNode);
   this.edges[toNode].push(fromNode);
-
 };
 
 // Remove an edge between any two specified (by value) nodes.
@@ -56,13 +55,14 @@ Graph.prototype.forEachNode = function(cb) {
 
 // Returns the node with the most edges
 Graph.prototype.findMostEdges = function() {
-  var mostEdges = this.nodes[0];
+  var mostEdgesNode = this.nodes[0];
   for (var i = 0; i < this.nodes.length; i++) {
-    if (this.edges[this.nodes[i]].length > this.edges[mostEdges].length) {   
-      mostEdges = this.nodes[i];
+    var currentNodeEdges = this.edges[this.nodes[i]]; 
+    if (currentNodeEdges.length > this.edges[mostEdgesNode].length) {   
+      mostEdgesNode = this.nodes[i];
     }
   }
-  return mostEdges;
+  return mostEdgesNode;
 };
 
 /*
