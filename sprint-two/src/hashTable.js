@@ -12,20 +12,23 @@ HashTable.prototype.insert = function(k, v, shifting) {
   }
   var index = getIndexBelowMaxForKey(k, this._limit);
   var currentBucket = this._storage.get(index);
-  if (Array.isArray(currentBucket)) {
-    //need to check for already used key
-    for (var i = 0; i < currentBucket.length; i++) {
-      if (currentBucket[i][0] === k) {
-        currentBucket[i][1] = v;
-      } else {
-        currentBucket.push([k, v]);
+  this._storage.set(index, this.addToBucket(currentBucket, k, v));
+  this._numberOfThings++;
+};
+
+HashTable.prototype.addToBucket = function(bucket, k, v) {
+  if (Array.isArray(bucket)) { //bucket has been previously used
+    for (var i = 0; i < bucket.length; i++) {
+      if (bucket[i][0] === k) { //key already stored in hash table
+        bucket[i][1] = v; //update to new value
+      } else { //new key
+        bucket.push([k, v]); //add value pair to bucket
       }
     }
-    this._storage.set(index, currentBucket);
   } else {
-    this._storage.set(index, [[k, v]]);
+    bucket = [[k, v]]; //new bucket
   }
-  this._numberOfThings++;
+  return bucket;
 };
 
 HashTable.prototype.retrieve = function(k) {
@@ -44,13 +47,18 @@ HashTable.prototype.remove = function(k) {
   }
   var index = getIndexBelowMaxForKey(k, this._limit);
   var holderBucket = this._storage.get(index) || [];
-  for (var i = 0; i < holderBucket.length; i++) {
-    if (holderBucket[i][0] === k) { //find key in bucketed tuples
-      holderBucket.splice(i, 1); //take that tuple out of bucket
-    }
-  }
+  holderBucket = this.removeFromBucket(holderBucket, k);
   this._storage.set(index, holderBucket); //set storage to be new smaller bucket
   this._numberOfThings--;
+};
+
+HashTable.prototype.removeFromBucket = function(bucket, k) {
+  for (var i = 0; i < bucket.length; i++) {
+    if (bucket[i][0] === k) { //find key in bucketed tuples
+      bucket.splice(i, 1); //take that tuple out of bucket
+    }
+  }
+  return bucket;
 };
 
 HashTable.prototype.findKeyFor = function(v) {
@@ -71,8 +79,8 @@ HashTable.prototype.pullEverything = function() {
   var tempStorage = [];
   for (var i = 0; i < (this._limit); i++) {
     var oldBucket = this._storage.get(i);
-    if (oldBucket) {// for unit of existing storage
-      for (var j = 0; j < oldBucket.length; j++) {//for each tuple in the bucket there
+    if (oldBucket) { // for unit of existing storage
+      for (var j = 0; j < oldBucket.length; j++) { //for each tuple in the bucket there
         tempStorage.push(oldBucket[j]);
       }
     }
