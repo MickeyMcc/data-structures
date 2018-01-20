@@ -8,7 +8,7 @@ var HashTable = function() {
 
 HashTable.prototype.insert = function(k, v, shifting) {
   if ((this._numberOfThings + 1) / this._limit >= 0.75) {
-    this.increaseSize(); 
+    this.changeSize(2); 
   }
   var index = getIndexBelowMaxForKey(k, this._limit);
   var currentBucket = this._storage.get(index);
@@ -40,7 +40,7 @@ HashTable.prototype.retrieve = function(k) {
 
 HashTable.prototype.remove = function(k) {
   if ((this._numberOfThings - 1) / this._limit < 0.25) {
-    this.decreaseSize(); 
+    this.changeSize(.5); 
   }
   var index = getIndexBelowMaxForKey(k, this._limit);
   var holderBucket = this._storage.get(index) || [];
@@ -79,23 +79,11 @@ HashTable.prototype.pullEverything = function() {
     this._storage.set(i, []);
   }
   return tempStorage;
-}
-
-HashTable.prototype.increaseSize = function() {
-  var existingData = this.pullEverything();
-  this._limit *= 2;
-  this._storage = LimitedArray(this._limit);
-  this._numberOfThings = 0;
-  for (var j = 0; j < existingData.length; j++) {
-    var key = existingData[j][0];
-    var value = existingData[j][1];
-    this.insert(key, value, true);
-  }
 };
 
-HashTable.prototype.decreaseSize = function() {
+HashTable.prototype.changeSize = function(factor) {
   var existingData = this.pullEverything();
-  this._limit /= 2;
+  this._limit *= factor;
   this._storage = LimitedArray(this._limit);
   this._numberOfThings = 0;
   for (var j = 0; j < existingData.length; j++) {
@@ -106,6 +94,12 @@ HashTable.prototype.decreaseSize = function() {
 };
 /*
  * Complexity: What is the time complexity of the above functions?
+ * .retrieve (no resize) O(1)
+ * .remove (no resize) O(1)
+ * .retrieve O(1)
+ * .changeSize (n)
+ * .pullEverything (n)
+ * .findKeyFor (n)
  */
 
 
