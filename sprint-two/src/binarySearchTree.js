@@ -53,6 +53,27 @@ biTreeMethods.depthFirstLog = function(cb) {
   }
 };
 
+biTreeMethods.breadthFirstLog = function(cb) {
+  this.breadthFirstLogHelper([this], cb);
+};
+
+biTreeMethods.breadthFirstLogHelper = function(currentLevel, cb) {
+  var nextLevel = [];
+  for (var i = 0; i < currentLevel.length; i++) {
+    cb(currentLevel[i].value);
+    if (currentLevel[i].left !== null) {
+      nextLevel.push(currentLevel[i].left);
+    }
+    if (currentLevel[i].right !== null) {
+      nextLevel.push(currentLevel[i].right);
+    }
+  }
+  console.log(nextLevel);
+  if (nextLevel.length !== 0) {
+    this.breadthFirstLogHelper(nextLevel, cb);
+  }
+};
+
 biTreeMethods.closest = function(value, closestValue = 0) {
   if (Math.abs(this.value - value) < Math.abs(closestValue - value)) { //doesn't replace on ties
     closestValue = this.value;
