@@ -68,7 +68,6 @@ biTreeMethods.breadthFirstLogHelper = function(currentLevel, cb) {
       nextLevel.push(currentLevel[i].right);
     }
   }
-  console.log(nextLevel);
   if (nextLevel.length !== 0) {
     this.breadthFirstLogHelper(nextLevel, cb);
   }
