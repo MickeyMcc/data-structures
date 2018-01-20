@@ -14,6 +14,7 @@ describe('tree', function() {
   it('should add children to the tree', function() {
     tree.addChild(5);
     expect(tree.children[0].value).to.equal(5);
+    expect(tree.children[0].parent).to.equal(tree);
   });
 
   it('should return true for a value that the tree contains', function() {
@@ -30,6 +31,7 @@ describe('tree', function() {
     tree.addChild(5);
     tree.children[0].addChild(6);
     expect(tree.children[0].children[0].value).to.equal(6);
+    expect(tree.children[0].children[0].parent.value).to.equal(5);
   });
 
   it('should correctly detect nested children', function() {
@@ -46,10 +48,22 @@ describe('tree', function() {
     tree.addChild(6);
     tree.children[0].addChild(7);
     tree.children[1].addChild(8);
-    tree.remove(7);
+    tree.removeChild(7);
     expect(tree.contains(7)).to.equal(false);
-    tree.remove(6);
+    tree.removeChild(6);
     expect(tree.contains(8)).to.equal(false);
+  });
+
+  it('should remove a child from its parent', function() {
+    tree.addChild(5);
+    tree.addChild(6);
+    tree.children[0].addChild(7);
+    tree.children[1].addChild(8);
+    var childTree = tree.children[0].removeFromParent();
+    expect(tree.children[0].value).to.equal(6);
+    expect(tree.contains(7)).to.equal(false);
+    expect(childTree.parent).to.equal(null);
+    expect(childTree.contains(7)).to.equal(true);
   });
 
 });
