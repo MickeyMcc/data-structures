@@ -18,6 +18,7 @@ describe('binarySearchTree', function() {
     binarySearchTree.insert(6);
     expect(binarySearchTree.left.right.value).to.equal(3);
     expect(binarySearchTree.right.left.value).to.equal(6);
+    expect(binarySearchTree.left.parent.value).to.equal(5);
   });
 
   it('should have a working "contains" method', function() {
@@ -71,5 +72,17 @@ describe('binarySearchTree', function() {
     expect(binarySearchTree.closest(65)).to.equal(17);
   });
 
+  xit('should rebalance', function() {
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(12);
+    binarySearchTree.insert(7);
+    binarySearchTree.insert(15);
+
+    binarySearchTree.insert(4);
+    binarySearchTree.insert(10);
+    binarySearchTree.insert(11);
+    binarySearchTree.insert(17);
+    expect(binarySearchTree.closest(65)).to.equal(17);
+  });
   
 });

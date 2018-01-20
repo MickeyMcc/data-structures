@@ -1,8 +1,13 @@
 var BinarySearchTree = function(value) {
   var newBiTree = {};
   newBiTree.value = value;
+
   newBiTree.left = null;
   newBiTree.right = null;
+  newBiTree.parent = null;
+
+  newBiTree.numOnLeft = 0;
+  newBiTree.numOnRight = 0;
 
   _.extend(newBiTree, biTreeMethods);
   return newBiTree;
@@ -11,19 +16,23 @@ var BinarySearchTree = function(value) {
 var biTreeMethods = {};
 
 biTreeMethods.insert = function(value) {
-  if (value === this.value) {
-    return;//if val at node equals val to be added, quit
+  if (this.contains(value)) {
+    return;//if tree already has the value to add, quit
   }
   if (value > this.value) { //check if value to be added is greater than val at node
+    this.numOnRight++;
     this.right = this.addToBranch(this.right, value);
   } else { // else (to be added less than current node)see if left leaf is taken
+    this.numOnLeft++;
     this.left = this.addToBranch(this.left, value);
   }
+  this.checkRebalance();
 };
 
 biTreeMethods.addToBranch = function(branch, value) {
   if (branch === null) { 
     branch = BinarySearchTree(value);
+    branch.parent = this;
   } else {
     branch.insert(value); //recurse down tree
   }
@@ -41,6 +50,32 @@ biTreeMethods.contains = function(value) {
     found = found || this.left.contains(value); 
   }
   return found;
+};
+
+biTreeMethods.checkRebalance = function() {
+  this.depthFirstLog(function(node) {
+    if ( this.numOnRight + 1 < this.numOnLeft ) {
+      this.rebalanceTree('left');
+    } else if ( this.numOnRight > this.numOnLeft + 1 ) {
+      this.rebalanceTree('right');
+    }
+  });
+};
+
+biTreeMethods.rebalanceTree = function(heavySide) {
+  if (heavySide === 'right') {
+    var lightSide = 'left';
+  } else {
+    lightSide = 'right';
+  }
+  var oldTop = this;
+  var newTop = this[heavySide];
+  newTop[lightSide] = oldTop;
+  newTop[heavySide] = oldTop[lightSide];
+  newTop.parent = oldTop.parent;
+  oldTop.parent = newTop;
+
+  return newTop;
 };
 
 biTreeMethods.depthFirstLog = function(cb) {
