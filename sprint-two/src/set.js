@@ -7,21 +7,21 @@ var Set = function() {
 var setPrototype = {};
 
 setPrototype.add = function(item) {
-  this._storage[item] = true;
+  this._storage[JSON.stringify(item)] = item;
 };
 
 setPrototype.contains = function(item) {
-  return (this._storage[item] === true);
+  return !!this._storage[JSON.stringify(item)];
 };
 
 setPrototype.remove = function(item) {
-  delete this._storage[item];
+  delete this._storage[JSON.stringify(item)];
 };
 
 setPrototype.getRandom = function() {
   var elements = Object.keys(this._storage);
   var randomNumber = Math.floor(Math.random() * elements.length); 
-  return elements[randomNumber];
+  return this._storage[elements[randomNumber]];
 };
 
 /*  

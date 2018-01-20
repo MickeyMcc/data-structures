@@ -11,11 +11,17 @@ describe('set', function() {
     expect(set.remove).to.be.a('function');
   });
 
-  it('should add values to a set', function() {
+  it('should add values of all types to a set', function() {
     set.add('Susan Sarandon');
     set.add('Danny Glover');
+    set.add({'cat' : 'cute' });
+    set.add({'date' : 'Jan 20' });
+    set.add(12);
     expect(set.contains('Danny Glover')).to.equal(true);
     expect(set.contains('Susan Sarandon')).to.equal(true);
+    expect(set.contains({'cat' : 'cute' })).to.equal(true);
+    expect(set.contains({'date' : 'Jan 20' })).to.equal(true);
+    expect(set.contains(12)).to.equal(true);
   });
 
   it('should remove values from a set', function() {
