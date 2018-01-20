@@ -1,74 +1,78 @@
 var DoublyLinkedList = function() {
-  var list = {};
-  list.head = null;
-  list.tail = null;
+  var doubleList = {};
+  doubleList.head = null;
+  doubleList.tail = null;
 
-  list.addToTail = function(value) {
-    if (list.tail === null) {
-      list.tail = Node(value);
-      list.head = list.tail;
+  doubleList.addToTail = function(value) {
+    if (doubleList.tail === null) {
+      doubleList.setFirstNode(value);
     } else {
-      list.tail.next = Node(value);
-      list.tail.next.previous = list.tail;
-      list.tail = list.tail.next;
+      var newTail = Node(value);
+      var oldTail = doubleList.tail;
+      oldTail.next = newTail;
+      newTail.previous = oldTail;
+      doubleList.tail = newTail;
     }
   };
 
-  list.addToHead = function(value) {
-    if (list.head === null) {
-      list.head = Node(value);
-      list.tail = list.head;
+  doubleList.addToHead = function(value) {
+    if (doubleList.head === null) {
+      doubleList.setFirstNode(value);
     } else {
-      var oldHead = list.head;
-      list.head = Node(value);
-      oldHead.previous = list.head;
-      list.head.next = oldHead;
+      var oldHead = doubleList.head;
+      doubleList.head = Node(value);
+      oldHead.previous = doubleList.head;
+      doubleList.head.next = oldHead;
     }
   };
 
-  list.removeTail = function() {
-    var oldTailVal = list.tail.value;
-    if (list.tail.previous) {
-      list.tail = list.tail.previous;
-      list.tail.next = null;
-    } else {
-      list.head = null;
-      list.tail = null;
-    }
-    return oldTailVal
+  doubleList.setFirstNode = function(value) {
+    doubleList.tail = Node(value);
+    doubleList.head = doubleList.tail;
   };
 
-  list.removeHead = function() {
-    var oldHeadVal = list.head.value;
-    if (list.head.next) {
-      list.head = list.head.next;
-      list.head.previous = null;
+  doubleList.removeTail = function() {
+    var oldTailVal = doubleList.tail.value;
+    if (doubleList.tail.previous) {
+      doubleList.tail = doubleList.tail.previous;
+      doubleList.tail.next = null;
     } else {
-      list.head = null;
-      list.tail = null;
+      doubleList.head = null;
+      doubleList.tail = null;
     }
-    return oldHeadVal;
+    return oldTailVal;
   };
 
-  list.contains = function(target) {
-    var currentNode = list.head;
-    while (true) {
+  doubleList.removeHead = function() {
+    var oldHead = doubleList.head;
+    var newHead = oldHead.next;
+    if (newHead) { //if there is not only one element
+      doubleList.head = newHead;
+      newHead.previous = null;
+    } else {
+      doubleList.makeDListEmpty();
+    }
+    return oldHead.value;
+  };
+
+  doubleList.makeDListEmpty = function () {
+    doubleList.head = null;
+    doubleList.tail = null;
+  };
+
+  doubleList.contains = function(target) {
+    var currentNode = doubleList.head;
+    do {
       if (target === currentNode.value) {
         return true;
       } else {
-        if (currentNode.next === null) {
-          break;
-        } else {
-          currentNode = currentNode.next;
-        }
+        currentNode = currentNode.next;
       }
-    }
+    } while (currentNode !== null);
     return false;
   };
 
-
-
-  return list;
+  return doubleList;
 };
 
 var Node = function(value) {
