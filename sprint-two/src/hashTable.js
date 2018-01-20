@@ -6,9 +6,9 @@ var HashTable = function() {
   this._numberOfThings = 0;
 };
 
-HashTable.prototype.insert = function(k, v) {
+HashTable.prototype.insert = function(k, v, shifting) {
   if ((this._numberOfThings + 1) / this._limit >= 0.75) {
-    this.changeStorageSize(2); 
+    this.increaseSize(); 
   }
   var index = getIndexBelowMaxForKey(k, this._limit);
   var currentBucket = this._storage.get(index);
@@ -39,13 +39,11 @@ HashTable.prototype.retrieve = function(k) {
 };
 
 HashTable.prototype.remove = function(k) {
-  if ((this._numberOfThings - 1) / this._limit < 0.25) {
-    this.changeStorageSize(.5); 
-  }
+  // if ((this._numberOfThings - 1) / this._limit < 0.25) {
+  //   this.changeStorageSize(.5); 
+  // }
   var index = getIndexBelowMaxForKey(k, this._limit);
-  console.log('index', index, 'this limit', this._limit);
   var holderBucket = this._storage.get(index) || [];
-  console.log('holder bucket', holderBucket);
   for (var i = 0; i < holderBucket.length; i++) {
     if (holderBucket[i][0] === k) { //find key in bucketed tuples
       holderBucket.splice(i, 1); //take that tuple out of bucket
@@ -83,22 +81,15 @@ HashTable.prototype.pullEverything = function() {
   return tempStorage;
 }
 
-HashTable.prototype.changeStorageSize = function(expansionFactor) {
+HashTable.prototype.increaseSize = function() {
   var existingData = this.pullEverything();
-  this._limit *= expansionFactor;
+  this._limit *= 2;
+  this._storage = LimitedArray(this._limit);
+  this._numberOfThings = 0;
   for (var j = 0; j < existingData.length; j++) {
     var key = existingData[j][0];
     var value = existingData[j][1];
-    this.insert(key, value);
-    // var index = getIndexBelowMaxForKey(key, this._limit);
-    // // modified insert function starts here
-    // var currentBucket = newStorage.get(index);
-    // if (Array.isArray(currentBucket)) {
-    //   currentBucket.push([key, value]);
-    //   newStorage.set(index, currentBucket);
-    // } else {
-    //   newStorage.set(index, [[key, value]]);
-    // }
+    this.insert(key, value, true);
   }
 };
 /*
