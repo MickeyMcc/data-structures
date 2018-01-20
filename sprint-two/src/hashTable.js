@@ -33,7 +33,11 @@ HashTable.prototype.addToBucket = function(bucket, k, v) {
 
 HashTable.prototype.retrieve = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-  var bucket = this._storage.get(index);  //bucket is arr of tuples
+  var bucket = this._storage.get(index); //bucket is arr of tuples
+  return this.findInBucket(bucket, k);
+};
+
+HashTable.prototype.findInBucket = function(bucket, k) {
   for (var i = 0; i < bucket.length; i++) {
     if (bucket[i][0] === k) {
       return bucket[i][1];
@@ -64,15 +68,22 @@ HashTable.prototype.removeFromBucket = function(bucket, k) {
 HashTable.prototype.findKeyFor = function(v) {
   for (var i = 0; i < this._limit; i++) {
     var bucket = this._storage.get(i);
-    if (Array.isArray(bucket)) {
-      for (var j = 0; j < bucket.length; j++) {
-        if (bucket[j][1] === v) {
-          return bucket[j][0];
-        }
-      }
+    var key = this.findKeyInBucket(bucket, v); //if value was not in this bucket, undefined
+    if (key !== undefined) {
+      return key;
     }
   }
   return 'value not found';
+};
+
+HashTable.prototype.findKeyInBucket = function(bucket, v) {
+  if (Array.isArray(bucket)) {
+    for (var j = 0; j < bucket.length; j++) {
+      if (bucket[j][1] === v) {
+        return bucket[j][0]; //if the value was in the bucket returns corresponding key
+      }
+    }
+  } //otherwise returns undefined
 };
 
 HashTable.prototype.pullEverything = function() {
@@ -84,7 +95,7 @@ HashTable.prototype.pullEverything = function() {
         tempStorage.push(oldBucket[j]);
       }
     }
-    this._storage.set(i, []);
+    this._storage.set(i, []); //clears storage in prep for adding everything back in
   }
   return tempStorage;
 };
