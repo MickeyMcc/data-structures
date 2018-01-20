@@ -77,19 +77,11 @@ HashTable.prototype.remove = function(k) {
   return null;
 };
 
-// HashTable.prototype.removeFromBucket = function(bucket, k) {
-//   for (var i = 0; i < bucket.length; i++) {
-//     if (bucket[i][0] === k) { //find key in bucketed tuples
-//       bucket.splice(i, 1); //take that tuple out of bucket
-//     }
-//   }
-//   return bucket;
-// };
-
 HashTable.prototype.findKeyFor = function(v) {
   for (var i = 0; i < this._limit; i++) {
     var bucket = this._storage.get(i);
     var key = this.findKeyInBucket(bucket, v); //if value was not in this bucket, undefined
+    
     if (key !== undefined) {
       return key;
     }
@@ -107,29 +99,24 @@ HashTable.prototype.findKeyInBucket = function(bucket, v) {
   } //otherwise returns undefined
 };
 
-HashTable.prototype.pullEverything = function() {
-  var tempStorage = [];
-  this._storage.each(function (bucket) {
-    if (bucket) { // for unit of existing storage
-      for (var j = 0; j < bucket.length; j++) { //for each tuple in the bucket there
-        tempStorage.push(bucket[j]);
-      }
-    }
-    bucket = []; //clears storage in prep for adding everything back in
-  }.bind(this));
-  return tempStorage;
-};
-
 HashTable.prototype.changeSize = function(factor) {
-  var existingData = this.pullEverything();
+  var oldStorage = this._storage;
+  
   this._limit *= factor;
   this._storage = LimitedArray(this._limit);
-  this._numberOfThings = 0;
-  for (var j = 0; j < existingData.length; j++) {
-    var key = existingData[j][0];
-    var value = existingData[j][1];
-    this.insert(key, value, true);
-  }
+  this._numberOfThings = 0; //insert method in loop recounts items
+  
+  //move items from old storage to new larger storage
+  oldStorage.each(function (bucket) {
+    if (bucket) { // for unit of existing storage
+      for (var j = 0; j < bucket.length; j++) { //for each tuple in the bucket there
+        var tuple = bucket[j];
+        this.insert(tuple[0], tuple[1]);
+      }
+    }
+  }.bind(this));
+
+  return this._storage;
 };
 /*
  * Complexity: What is the time complexity of the above functions?
